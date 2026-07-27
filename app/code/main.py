@@ -2,7 +2,7 @@
 
 import sys
 import constants
-from windowmanager import WindowManager
+from tilingmanager import WindowManager
 from pathlib import Path
 from PySide6.QtWidgets import QApplication, QMainWindow, QStackedWidget
 from PySide6.QtCore import QStandardPaths
