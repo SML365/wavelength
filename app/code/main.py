@@ -5,7 +5,6 @@ import constants
 from tilingmanager import WindowManager
 from pathlib import Path
 from PySide6.QtWidgets import QApplication, QMainWindow, QStackedWidget
-from PySide6.QtCore import QStandardPaths
 
 style_path = Path(__file__).parent / "style" / "style.css"
 stylesheet = ""
