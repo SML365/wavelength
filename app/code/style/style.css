@@ -3,16 +3,50 @@
     background-color: #303030;
 }
 
-#SubWindowTitleBar
+#SubWindowTitle
 {
     background-color: #303030;
     padding: 4px 0px;
+    color: #FFFFFF;
+    font-size: 14px;
+}
+
+#SubWindowButtonContainer
+{
+    background-color: #1c1c1c;
+    border: none;
+    border-top-left-radius: 6px;
+    border-top-right-radius: 6px;
+}
+
+#SubWindowCloseButton
+{
+    background-color: #1c1c1c;
+    color: #FFFFFF;
+    width: 16px;
+    height: 16px;
+    font-family: Consolas; /* Default Windows font */
+    border: none;
+    border-radius: 4px;
+    margin: 0px;
+}
+
+#SubWindowMenuButton
+{
+    background-color: #1c1c1c;
+    color: #FFFFFF;
+    width: 16px;
+    height: 16px;
+    font-family: Consolas; /* Default Windows font */
+    border: none;
+    border-radius: 4px;
 }
 
 #SubWindowBase
 {
     background-color: #1c1c1c;
     border-radius: 6px;
+    border-top-right-radius: 0px;
 }
 
 QSplitter::handle

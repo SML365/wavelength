@@ -1,6 +1,6 @@
 from enum import Enum, auto
 import constants
-from PySide6.QtWidgets import QWidget, QVBoxLayout, QLabel, QSplitter
+from PySide6.QtWidgets import QWidget, QVBoxLayout, QLabel, QSplitter, QHBoxLayout, QPushButton
 from PySide6.QtCore import Qt, QSize
 
 class PanelType(Enum):
@@ -14,6 +14,26 @@ class PanelType(Enum):
     TEST_WINDOW = auto()
 
 # --- Base Subwindow --- #
+class SubWindowButtons(QWidget):
+    def __init__(self):
+        super().__init__()
+
+        self.setObjectName("SubWindowButtonContainer")
+        self.setAttribute(Qt.WA_StyledBackground, True)
+
+        self.titlebar_close = QPushButton("X")
+        self.titlebar_close.setObjectName("SubWindowCloseButton")
+        
+        self.titlebar_menu = QPushButton("▼")
+        self.titlebar_menu.setObjectName("SubWindowMenuButton")
+
+        self.button_layout = QHBoxLayout()
+        self.button_layout.addWidget(self.titlebar_menu)
+        self.button_layout.addWidget(self.titlebar_close)
+
+        self.setLayout(self.button_layout)
+
+        
 class SubWindow(QWidget):
     def __init__(self, title):
         super().__init__()
@@ -24,10 +44,18 @@ class SubWindow(QWidget):
         self.main_layout.setContentsMargins(0, 0, 0, 0)
         self.main_layout.setSpacing(0)
 
-        self.title_bar = QLabel(self.title)
-        self.title_bar.setObjectName("SubWindowTitleBar")
+        self.titlebar_title = QLabel(self.title)
+        self.titlebar_title.setObjectName("SubWindowTitle")
 
-        self.main_layout.addWidget(self.title_bar)
+        self.titlebar_buttons = SubWindowButtons()
+
+        self.titlebar_layout = QHBoxLayout()
+        self.titlebar_layout.addWidget(self.titlebar_title)
+        self.titlebar_layout.addStretch()
+        self.titlebar_layout.addWidget(self.titlebar_buttons)
+        self.titlebar_layout.setSpacing(0)
+
+        self.main_layout.addLayout(self.titlebar_layout)
 
         self.content_widget = QWidget()
         self.content_widget.setObjectName("SubWindowBase")
@@ -40,7 +68,7 @@ class SubWindow(QWidget):
 
     def set_title(self, title: str):
         self.title = title
-        self.title_bar.setText(title)
+        self.titlebar_title.setText(title)
 
 # --- Specific Windows --- #
 
