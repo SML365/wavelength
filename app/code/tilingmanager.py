@@ -13,25 +13,6 @@ class PanelType(Enum):
     PLUGIN_VIEW = auto()
     TEST_WINDOW = auto()
 
-# --- Panel Maker --- #
-class PanelDefinition:
-    def __init__(
-            self,
-            panel_type: PanelType,
-            title: str,
-            widget_class,
-            minimum_size: QSize,
-            maximum_size: QSize
-    ):
-        self.panel_type = panel_type
-        self.title = title
-        self.widget_class = widget_class
-        self.minimum_size = minimum_size
-        self.maximum_size = maximum_size
-
-    def create_widget(self):
-        return self.widget_class()
-
 # --- Base Subwindow --- #
 class SubWindow(QWidget):
     def __init__(self, title):
