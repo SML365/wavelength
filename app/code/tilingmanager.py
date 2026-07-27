@@ -1,7 +1,8 @@
 from enum import Enum, auto
 import constants
-from PySide6.QtWidgets import QWidget, QVBoxLayout, QLabel, QSplitter, QHBoxLayout, QPushButton
+from PySide6.QtWidgets import QWidget, QVBoxLayout, QLabel, QSplitter, QHBoxLayout, QPushButton, QToolButton
 from PySide6.QtCore import Qt, QSize
+from PySide6.QtGui import QIcon
 
 class PanelType(Enum):
     SIDEBAR = auto()
@@ -21,7 +22,9 @@ class SubWindowButtons(QWidget):
         self.setObjectName("SubWindowButtonContainer")
         self.setAttribute(Qt.WA_StyledBackground, True)
 
-        self.titlebar_close = QPushButton("X")
+        self.titlebar_close = QToolButton()
+        self.titlebar_close.setIcon(QIcon(rf"{constants.FILEPATH.parent}\data\assets\button_icons\close_icon.png")) # Icons are color #FFFFFF
+        self.titlebar_close.setIconSize(QSize(16, 16))
         self.titlebar_close.setObjectName("SubWindowCloseButton")
         
         self.titlebar_menu = QPushButton("▼")
