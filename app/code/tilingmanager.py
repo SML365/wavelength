@@ -28,7 +28,7 @@ class PanelType(Enum):
     MIXER = auto()
     BEAT_EDITOR = auto()
     SONG_EDITOR = auto()
-    PLUGIN_VIEW = auto()
+    RESOURCE_MONITOR = auto()
     TEST_WINDOW = auto()
 
 # --- Base Subwindow --- #
@@ -71,7 +71,11 @@ class SubWindowButtons(QWidget):
         split_vertical_action = self.dropdown_menu.addAction("Split Vertically")
         self.dropdown_menu.addSeparator()
         window_type_menu = self.dropdown_menu.addMenu("Window Type")
+        window_type_menu.setWindowFlags(self.dropdown_menu.windowFlags() | Qt.FramelessWindowHint | Qt.NoDropShadowWindowHint)
 
+        for p_type in PanelType:
+            action = window_type_menu.addAction(p_type.name.replace("_", " ").title())
+            # action.triggered.connect() work on this next
         
 class SubWindow(QWidget):
     def __init__(self, title):

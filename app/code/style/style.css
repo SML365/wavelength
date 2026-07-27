@@ -51,17 +51,18 @@
     border-top-right-radius: 0px;
 }
 
+/* QSplitter Styling - Gaps between two windows */
 QSplitter::handle
 {
     background-color: #303030;
 }
 
+/* QMenu Styling - All WaveLength context menus */
 QMenu
 {
     background-color: #1c1c1c;
     border: 1px solid #303030;
-    border-top: none;
-    border-radius: 4px;
+    border-radius: 2px;
     min-width: 150px;
 }
 
@@ -80,10 +81,6 @@ QMenu::separator {
     height: 1px;
     background-color: #303030;
     margin: 0px 0px;
-}
-
-QMenu::icon {
-    padding-left: 8px;
 }
 
 QToolButton#SubWindowMenuButton::menu-indicator {
