@@ -95,6 +95,7 @@ class WindowManager(QWidget):
         self.main_layout = QVBoxLayout(self)
 
         self.root_split = QSplitter(Qt.Horizontal)
+        self.root_split.setChildrenCollapsible(False)
 
         self.main_layout.addWidget(self.root_split)
         self.main_layout.setContentsMargins(6, 6, 6, 6)
