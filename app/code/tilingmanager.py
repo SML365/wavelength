@@ -1,9 +1,26 @@
 from enum import Enum, auto
 import constants
-from PySide6.QtWidgets import QWidget, QVBoxLayout, QLabel, QSplitter, QHBoxLayout, QPushButton, QToolButton
+from PySide6.QtWidgets import QWidget, QVBoxLayout, QLabel, QSplitter, QHBoxLayout, QVBoxLayout, QToolButton, QMenu
 from PySide6.QtCore import Qt, QSize
-from PySide6.QtGui import QIcon
+from PySide6.QtGui import QIcon, QAction
 
+# --- Tree Setup --- #
+class SplitDirection(Enum):
+    HORIZONTAL = auto()
+    VERTICAL = auto()
+
+class PanelNode:
+    def __init__(self, panel_type):
+        self.panel_type = panel_type
+
+class SplitNode:
+    def __init__(self, direction, ratio=0.5):
+        self.direction = direction
+        self.ratio = ratio
+        self.first = None
+        self.second = None
+
+# --- Window Types --- #
 class PanelType(Enum):
     SIDEBAR = auto()
     BROWSER = auto()
@@ -22,19 +39,38 @@ class SubWindowButtons(QWidget):
         self.setObjectName("SubWindowButtonContainer")
         self.setAttribute(Qt.WA_StyledBackground, True)
 
+        # --- Close Button --- #
         self.titlebar_close = QToolButton()
-        self.titlebar_close.setIcon(QIcon(rf"{constants.FILEPATH.parent}\data\assets\button_icons\close_icon.png")) # Icons are color #FFFFFF
+        self.titlebar_close.setIcon(QIcon(rf"{constants.FILEPATH.parent}\data\assets\button_icons\close_icon.png")) # Icons are color #AAAAAA
         self.titlebar_close.setIconSize(QSize(16, 16))
         self.titlebar_close.setObjectName("SubWindowCloseButton")
-        
-        self.titlebar_menu = QPushButton("▼")
+
+        # --- Menu Button and Dropdown --- #
+        self.titlebar_menu = QToolButton()
+        self.titlebar_menu.setIcon(QIcon(rf"{constants.FILEPATH.parent}\data\assets\button_icons\menu_icon.png")) # Icons are color #AAAAAA
+        self.titlebar_menu.setIconSize(QSize(12, 12))
         self.titlebar_menu.setObjectName("SubWindowMenuButton")
 
+        self.dropdown_menu = QMenu(self.titlebar_menu)
+        self.build_menu()
+        self.titlebar_menu.setMenu(self.dropdown_menu)
+        self.titlebar_menu.setPopupMode(QToolButton.InstantPopup)
+
         self.button_layout = QHBoxLayout()
+        self.button_layout.setContentsMargins(8, 4, 8, 0)
         self.button_layout.addWidget(self.titlebar_menu)
         self.button_layout.addWidget(self.titlebar_close)
 
         self.setLayout(self.button_layout)
+
+    def build_menu(self):
+        self.dropdown_menu.clear()
+        self.dropdown_menu.setWindowFlags(self.dropdown_menu.windowFlags() | Qt.FramelessWindowHint | Qt.NoDropShadowWindowHint)
+
+        split_horizontal_action = self.dropdown_menu.addAction("Split Horizontally")
+        split_vertical_action = self.dropdown_menu.addAction("Split Vertically")
+        self.dropdown_menu.addSeparator()
+        window_type_menu = self.dropdown_menu.addMenu("Window Type")
 
         
 class SubWindow(QWidget):
@@ -123,17 +159,36 @@ class WindowManager(QWidget):
     def __init__(self):
         super().__init__()
 
-        self.main_layout = QVBoxLayout(self)
+        self.layout = QVBoxLayout(self)
+        self.layout.setContentsMargins(4, 4, 4, 4)
 
-        self.root_split = QSplitter(Qt.Horizontal)
-        self.root_split.setChildrenCollapsible(False)
+        self.root = SplitNode(SplitDirection.HORIZONTAL)
+        self.root.first = PanelNode(PanelType.TEST_WINDOW)
 
-        self.main_layout.addWidget(self.root_split)
-        self.main_layout.setContentsMargins(6, 6, 6, 6)
+        self.right = SplitNode(SplitDirection.VERTICAL)
+        self.right.first = PanelNode(PanelType.SIDEBAR)
+        self.right.second = PanelNode(PanelType.TEST_WINDOW)
 
-        self.add_panel(PanelType.TEST_WINDOW)
-        self.add_panel(PanelType.SIDEBAR)
+        self.root.second = self.right
 
-    def add_panel(self, panel_type):
-        panel = PanelRegistry.create(panel_type)
-        self.root_split.addWidget(panel)
+        self.widget_tree = build(self.root)
+
+        self.layout.addWidget(self.widget_tree)
+
+def build(node):
+    if isinstance(node, PanelNode):
+        return PanelRegistry.create(node.panel_type)
+
+    orientation = (
+        Qt.Horizontal
+        if node.direction == SplitDirection.HORIZONTAL
+        else Qt.Vertical
+    )
+
+    splitter = QSplitter(orientation)
+    splitter.setChildrenCollapsible(False)
+
+    splitter.addWidget(build(node.first))
+    splitter.addWidget(build(node.second))
+
+    return splitter
