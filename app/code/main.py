@@ -9,6 +9,8 @@ from PySide6.QtWidgets import QApplication, QMainWindow, QStackedWidget
 style_path = constants.FILEPATH / "style" / "style.css"
 stylesheet = ""
 
+sys.dont_write_bytecode = True
+
 try:
     stylesheet = style_path.read_text(encoding="utf-8")
 except OSError as exception:
