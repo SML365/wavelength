@@ -87,25 +87,42 @@ QToolButton#SubWindowMenuButton::menu-indicator {
     image: none;
 }
 
-#SidebarTabSelector {
-    background-color: #1e1e1e;
+#SidebarVTabSelector,
+#SidebarHTabSelector
+{
+    background-color: #202020;
     border: none;
-    border-right: 1px solid #2a2a2a;
-    outline: 0;
+    outline: none;
+    border-radius: 0px;
 }
 
-#SidebarTabSelector::item {
+#SidebarVTabSelector::item
+{
     padding: 12px 4px;
     color: #888888;
 }
 
-#SidebarTabSelector::item:hover {
-    background-color: #262626;
-    color: #cccccc;
+#SidebarHTabSelector::item
+{
+    padding: 4px 12px;
+    color: #ffffff;
 }
 
-#SidebarTabSelector::item:selected {
-    background-color: #2d2d2d;
+#SidebarHTabSelector::item:hover,
+#SidebarVTabSelector::item:hover 
+{
+    background-color: #252525;
+    color: #ffffff;
+}
+
+#SidebarHTabSelector::item:selected {
+    background-color: #303030;
+    color: #ffffff;
+    border-top: 3px solid #7429ed;
+}
+
+#SidebarVTabSelector::item:selected {
+    background-color: #303030;
     color: #ffffff;
     border-left: 3px solid #7429ed;
 }
