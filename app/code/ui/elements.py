@@ -1,4 +1,4 @@
-from PySide6.QtWidgets import QListWidget, QStackedWidget, QListWidgetItem, QLabel, QWidget, QHBoxLayout, QVBoxLayout, QStyledItemDelegate, QStyle
+from PySide6.QtWidgets import QListWidget, QStackedWidget, QListWidgetItem, QLabel, QWidget, QHBoxLayout, QVBoxLayout, QStyledItemDelegate, QStyle, QAbstractItemView
 from PySide6.QtCore import Qt, QRect, QSize
 from PySide6.QtGui import QPainter
 
@@ -50,14 +50,18 @@ class VerticalTabSection(QWidget):
             self.tab_selector.addItem(item)
             self.panel_stack.addWidget(widget_page)
 
-        self.tab_selector.currentRowChanged.connect(self.panel_stack.setCurrentIndex)
-
         if 0 <= default_index < len(self.pages):
             self.tab_selector.setCurrentRow(default_index)
 
         # --- Connect Tab Switching --- #
         self.tab_selector.currentRowChanged.connect(self.panel_stack.setCurrentIndex)
         self.tab_selector.setCurrentRow(default_index)
+
+        # --- Configure Scrolling --- #
+        self.tab_selector.setVerticalScrollBarPolicy(Qt.ScrollBarAlwaysOff)
+        self.tab_selector.setHorizontalScrollBarPolicy(Qt.ScrollBarAlwaysOff)
+        self.tab_selector.setVerticalScrollMode(QAbstractItemView.ScrollPerPixel)
+        self.tab_selector.verticalScrollBar().setSingleStep(8)
 
         # --- Add to Layout --- #
         self.main_layout.addWidget(self.tab_selector)

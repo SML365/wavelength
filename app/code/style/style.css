@@ -87,10 +87,16 @@ QToolButton#SubWindowMenuButton::menu-indicator {
     image: none;
 }
 
+#HorizontalRule
+{
+    background-color: none;
+    color: #303030;
+}
+
 #SidebarVTabSelector,
 #SidebarHTabSelector
 {
-    background-color: #202020;
+    background-color: #1c1c1c;
     border: none;
     outline: none;
     border-radius: 0px;

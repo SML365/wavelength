@@ -12,12 +12,17 @@ class SidebarWindow(SubWindow):
 
         self.toolbar_tabs = elements.HorizontalTabSection(
             items={
-                "Select": QLabel("Song Settings"),
-                "Draw": QLabel("Output Settings"),
-                "Erase": QLabel("Track Inspector"),
+                "Select": QWidget(),
+                "Draw": QWidget(),
+                "Erase": QWidget(),
+                "Point": QWidget(),
             },
             default_index=0
         )
+
+        self.hline = QFrame()
+        self.hline.setFrameShape(QFrame.Shape.HLine)
+        self.hline.setObjectName("HorizontalRule")
 
         self.main_tabs = elements.VerticalTabSection(
             items={
@@ -31,4 +36,5 @@ class SidebarWindow(SubWindow):
 
         # --- Assemble Layout --- #
         self.content_layout.addWidget(self.toolbar_tabs, stretch=0)
+        self.content_layout.addWidget(self.hline)
         self.content_layout.addWidget(self.main_tabs, stretch=1)
